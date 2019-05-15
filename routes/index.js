@@ -25,27 +25,24 @@ router.get('/v0/hello', async (ctx, next) => {
   
 })
 
-router.get('/v0/veglist',async(ctx)=>{
+router.get('/v0/itemlist',async(ctx)=>{
   //res.header('Content-Type','application/json');
   //ctx.set("Content-Type", "application/json") 
-  let userid='10161768';
 
   let query=()=>{
       return new Promise((resolve,reject)=>{
-          db.query("select * from veg",async(err,data)=>{
+          db.query("select * from item",async(err,data)=>{
             console.log(data[0].VegName)
               if(err)
                   console.log(err)
               if(data.length==0){
                 resolve({
                   code:3,
-                  message:'nameerror'
+                  message:'no data'
                 })
               }
               else{
-                resolve({
-                  data:data
-                })
+                resolve(data)
               }
           })
       })
@@ -54,6 +51,30 @@ router.get('/v0/veglist',async(ctx)=>{
   ctx.body=result;
 })
 
+router.get('/v0/itemnum',async(ctx)=>{
+  //res.header('Content-Type','application/json');
+  //ctx.set("Content-Type", "application/json") 
+
+  let query=()=>{
+      return new Promise((resolve,reject)=>{
+          db.query("select count(*) as sum from item",async(err,data)=>{
+            console.log(data[0].itemName)
+              if(err)
+                  console.log(err)
+              if(data.length==0){
+                resolve({
+                  message:'error'
+                })
+              }
+              else{
+                resolve(data[0])
+              }
+          })
+      })
+  }
+  let result=await query();
+  ctx.body=result;
+})
 
 router.post('/v0/cart', async (ctx) => {
   //ctx.set("Content-Type", "application/json") 
@@ -111,7 +132,7 @@ router.post('/v0/order', async (ctx) => {
         let vegnum=veglist[i].vegnum;
         console.log('id:'+vegid)
         let param=[userid,vegid,orderid,vegnum];
-        db.query("insert into orderdetail (CustomerID,VegID,OrderID,VegSize) values ('10161768','"+vegid+"','"+orderid+"',"+vegnum+")",async(err,data)=>{
+        db.query("insert into orderdetail (CustomerID,ItemID,OrderID,ItemSize) values ('10161768','"+vegid+"','"+orderid+"',"+vegnum+")",(err,data)=>{
           if(err)
             {
                 console.log(err)
@@ -120,7 +141,7 @@ router.post('/v0/order', async (ctx) => {
                 })
             }
             else{
-              console.log('i:'+i)
+              console.log('order detail i:'+i)
             }
             
         })
@@ -134,6 +155,7 @@ router.post('/v0/order', async (ctx) => {
                   })
               }
               else{
+                console.log('vorder done!')
                 resolve({
                   message:'success'
                 })
@@ -146,6 +168,7 @@ router.post('/v0/order', async (ctx) => {
   }) 
 }
 let res=await query();
+console.log('done!!')
 ctx.body=res;
 
     // let res=await query().then((data)=>{
@@ -174,44 +197,6 @@ ctx.body=res;
 
 })
 
-
-router.post('/v0/getcart', async (ctx) => {
-  let userid='10161768';
-  let cartid=UID();
-  // let cartid=123456;
-  let veglist=ctx.request.body.veglist;
-  var count=0;
-  let query=()=>{ 
-    return new Promise((resolve,reject)=>{
-        //let param=[userid,vegid,cartid,vegnum];
-        db.query("select * from cart where CustomerID= '"+userid+"'",async(err,data)=>{
-          if(err)
-            {
-                console.log(err)
-                resolve({
-                  message:'error'
-                })
-            }
-          if(data.length==0){
-            console.log('no data')
-            resolve({
-              message:'no data'
-            })
-          }
-          else{
-            console.log('get data')
-            resolve({
-              message:data
-            })
-          }
-        })  
-  }) 
-}
-
-  let res=await query();
-  ctx.body=res;
-
-})
 
 
 module.exports = router

@@ -1,30 +1,31 @@
 const router = require('koa-router')()
-
+const db = require('./dbConfig')
 router.prefix('/v0/user')
 
 router.get('/', function (ctx, next) {
   ctx.body = 'this is a users response!'
 })
 
-router.post('logincheck', async(ctx, next)=>{
+router.post('/logincheck', async(ctx, next)=>{
   let userid=ctx.request.body.userid;
   let userpass=ctx.request.body.userpass;
   console.log('pass:'+userpass)
   let query=()=>{
       return new Promise((resolve,reject)=>{
-          db.query("select userPass from user where userId='"+userid+"'",async(err,data)=>{
+          db.query("select UserPass from user where UserId='"+userid+"'",async(err,data)=>{
             console.log(data[0])
               if(err)
                   console.log(err)
               if(data.length==0){
                 resolve({
                   code:3,
-                  message:'nameerror'
+                  message:'iderror'
                 })
               }
               else{
-                db.query("select userPass,userName from user where userId = '"+userid+"'",async(err,data)=>{
-                  if(userpass!=data[0]['userPass'])
+                db.query("select UserPass,UserName from user where UserId = '"+userid+"'",async(err,data)=>{
+                  console.log('UserPass'+data[0]['UserPass'])
+                  if(userpass!=data[0]['UserPass'])
                     resolve({
                       message:'passerror'
                     })
@@ -37,5 +38,32 @@ router.post('logincheck', async(ctx, next)=>{
   let result=await query();
   ctx.body=result;
 })
+
+router.post('/register', async(ctx, next)=>{
+  let userid=ctx.request.body.userid;
+  let userpass=ctx.request.body.userpass;
+  let username=ctx.request.body.username;
+  let userphone=ctx.request.body.userphone;
+  let query=()=>{
+      return new Promise((resolve,reject)=>{
+        var para=[userid,username,userpass,userphone]
+          db.query("insert into user (UserID,UserName,UserPass,UserPhone) values ('"+userid+"','"+username+"','"+userpass+"','"+userphone+"')",(err,data)=>{
+              if(err){
+                console.log(err)
+                resolve({
+                  message:'error'
+                })
+              } 
+              else{
+                   resolve({message:'success'})
+              }
+          })
+      })
+  }
+  let result=await query();
+  ctx.body=result;
+})
+
+
 
 module.exports = router
