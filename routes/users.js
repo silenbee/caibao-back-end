@@ -23,13 +23,19 @@ router.post('/logincheck', async(ctx, next)=>{
                 })
               }
               else{
-                db.query("select UserPass,UserName from user where UserId = '"+userid+"'",async(err,data)=>{
+                db.query("select UserPass,UserName,UserPhone from user where UserId = '"+userid+"'",async(err,data)=>{
                   console.log('UserPass'+data[0]['UserPass'])
                   if(userpass!=data[0]['UserPass'])
                     resolve({
                       message:'passerror'
                     })
-                  else resolve({message:'success'})
+                  else resolve({
+                    message:'success',
+                    userdata:{
+                      UserName:data[0].UserName,
+                      UserPhone:data[0].UserPhone
+                    }
+                  })
                 })
               }
           })
@@ -63,7 +69,5 @@ router.post('/register', async(ctx, next)=>{
   let result=await query();
   ctx.body=result;
 })
-
-
 
 module.exports = router
