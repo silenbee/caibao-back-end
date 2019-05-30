@@ -2,12 +2,11 @@
  * @Description: func for item
  * @Author: sheng
  * @Date: 2019-05-29 16:51:12
- * @LastEditTime: 2019-05-29 19:34:06
+ * @LastEditTime: 2019-05-30 13:58:17
  * @LastEditors: Please set LastEditors
  */
 
 const { query }=require('./async-db')
-
 
 var searchItem=async(ctx,key)=>{
     let sql="select * from item where item.itemName like '%"+key+"%' or itemType like '%"+key+"%'"

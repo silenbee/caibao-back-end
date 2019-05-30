@@ -1,6 +1,5 @@
 const router = require('koa-router')()
-const db = require('./dbConfig')
-const user=require('../controllers/user')
+const {User}=require('../models/userModel')
 router.prefix('/v0/user')
 
 router.get('/', function (ctx, next) {
@@ -11,28 +10,18 @@ router.get('/', function (ctx, next) {
 router.post('/logincheck', async(ctx, next)=>{
   let userid=ctx.request.body.userid;
   let userpass=ctx.request.body.userpass;
-  console.log('pass:'+userpass)
-  await user.logincheck(userid,userpass).then((res)=>{
-    ctx.body=res
-  }).catch((err)=>{
-    ctx.body={err:err}
-  })
+  //console.log('pass:'+userpass)
+  let user=new User(userid,userpass)
+  await user.login(ctx)
 })
-
 
 router.post('/register', async(ctx, next)=>{
   let userid=ctx.request.body.userid;
   let userpass=ctx.request.body.userpass;
   let username=ctx.request.body.username;
   let userphone=ctx.request.body.userphone;
-  await user.register(userid,username,userpass,userphone)
-    .then((res)=>{
-      ctx.body=res;
-    }).catch((err)=>{
-      ctx.body={
-        err:err
-      }
-    })
+  let user=new User(userid,userpass)
+  await user.register(ctx,userid,username,userpass,userphone)
 })
 
 module.exports = router

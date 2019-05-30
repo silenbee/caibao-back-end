@@ -1,9 +1,10 @@
 const router = require('koa-router')()
-const db=require('./dbConfig')
 const UID=require('uuid/v1')
-
-const orderController=require('../controllers/order')
 router.prefix('/v0/order')
+
+const {Order}=require('../models/OrderModel')
+
+var order=new Order()
 
 router.post('/createorder', async (ctx) => {
   console.log('order add')
@@ -11,9 +12,12 @@ router.post('/createorder', async (ctx) => {
   let orderid=UID();
   let veglist=ctx.request.body.veglist;
   let money=ctx.request.body.totalprice;
-  await orderController.createOrder(ctx,userid,orderid,veglist,money)
+  await order.createOrder(ctx,userid,orderid,veglist,money)
 })
 
-
+router.post('/getOrder', async (ctx) => {
+  let userid=ctx.request.body.userid;
+  await order.getMyOrder(ctx,userid)
+})
 
 module.exports = router

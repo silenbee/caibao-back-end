@@ -2,7 +2,7 @@
  * @Description: func for item
  * @Author: sheng
  * @Date: 2019-05-29 16:51:12
- * @LastEditTime: 2019-05-29 19:06:26
+ * @LastEditTime: 2019-05-30 12:23:26
  * @LastEditors: Please set LastEditors
  */
 
@@ -37,8 +37,43 @@ var createOrder=async(ctx,userid,orderid,veglist,money)=>{
 
 }
 
+var getMyOrder=async(ctx,userid)=>{
+    var result=[];
+    let sql="select OrderID from vorder where CustomerID = '"+userid+"'"
+    await query(sql).then(async(res)=>{
+        if(res.length==0){
+            ctx.body={
+                message:'no data'
+            }
+        }
+        else{
+            for(let i=0;i<res.length;i++){
+                let sqltmp="select * from orderdetail where orderID = '"+res[i]['OrderID']+"'"
+               
+                await query(sqltmp).then(async(data)=>{
+                    await result.push({
+                        orderid:res[i]['OrderID'],
+                        orderdetail:[]
+                    })
+                    for(let j=0;j<data.length;j++){
+                        //console.log(data[j])
+                        result[i]['orderdetail'].push(data[j])
+                    }
+                }).catch((err)=>{
+                    console.log(err)
+                })
+            }
+            ctx.body=result
+        }
+    }).catch((err)=>{
+        console.log(err)
+        ctx.body={
+            err:err
+        }
+    })
+}
 
 
 
 
-module.exports = {createOrder}
+module.exports = {createOrder,getMyOrder}

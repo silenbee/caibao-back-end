@@ -2,28 +2,24 @@
  * @Description: func for item
  * @Author: sheng
  * @Date: 2019-05-29 16:51:12
- * @LastEditTime: 2019-05-29 17:04:31
+ * @LastEditTime: 2019-05-30 16:38:57
  * @LastEditors: Please set LastEditors
  */
+const ItemController=require('../controllers/item')
 
-const UID=require('uuid/v1')
-const { query }=require('../controllers/async-db')
+class Item{
+  constructor(){}
+  getItemList(a){
+    return ItemController.getitemlist(a)
+  }
+  getItemNum(a){
+    return ItemController.getItemNum(a)
+  }
 
-var getitemlist=async(ctx)=>{
-  
-  let sql='sql';
-  await query( sql ).then((res)=>{
-        ctx.body=res;
-    }).catch((err)=>{
-      ctx.body={
-        err:err
-      }
-    });
 }
 
 
 
 
 
-
-module.exports = {getitemlist}
+module.exports = {Item}

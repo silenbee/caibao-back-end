@@ -1,8 +1,9 @@
 const router = require('koa-router')()
-const db=require('./dbConfig')
-const UID=require('uuid/v1')
-const { query }=require('../controllers/async-db')
-const item=require('../controllers/item')
+
+const {Item}=require('../models/itemModel')
+
+const item=new Item()
+
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
     title: 'Hello Caibao!'
