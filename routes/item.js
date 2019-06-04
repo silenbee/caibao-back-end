@@ -35,7 +35,6 @@ router.get('/v0/itemlist',async(ctx)=>{
 router.get('/v0/itemnum',async(ctx)=>{
   //res.header('Content-Type','application/json');
   //ctx.set("Content-Type", "application/json") 
-
   await item.getItemNum(ctx);
 })
 
