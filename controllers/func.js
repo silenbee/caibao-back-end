@@ -2,7 +2,7 @@
  * @Description: func for item
  * @Author: sheng
  * @Date: 2019-05-29 16:51:12
- * @LastEditTime: 2019-06-05 14:15:10
+ * @LastEditTime: 2019-06-05 14:36:53
  * @LastEditors: Please set LastEditors
  */
 
@@ -55,7 +55,7 @@ var getType=async(ctx,key)=>{
 }
 
 var getMoney=async(ctx,key)=>{
-    let sql="select sum(OrderMoney) from vorder"
+    let sql="select sum(OrderMoney) as totalmoney from vorder"
     await query( sql ).then((res)=>{
         if(res.length==0){
           console.log('no order')
@@ -104,7 +104,7 @@ var deleteAdmin=async(ctx,userid)=>{
 }
 
 var getOrderNum=async(ctx)=>{
-    let sql="select count(*) from vorder"
+    let sql="select count(*) as orderNum from vorder"
     await query( sql ).then((res)=>{
         if(res.length==0){
           console.log('no order')

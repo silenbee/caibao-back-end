@@ -19,5 +19,22 @@ router.post('/getType', async(ctx, next)=>{
     await func.getType(ctx,key)
 })
 
+router.post('/getOrderNum', async(ctx, next)=>{
+  await func.getOrderNum(ctx)
+})
+
+router.post('/getProfit', async(ctx, next)=>{
+  await func.getProfit(ctx,)
+})
+
+router.post('/addAdmin', async(ctx, next)=>{
+  let userid=ctx.request.body.userid
+  await func.addAdmin(ctx,userid)
+})
+
+router.post('/deleteAdmin', async(ctx, next)=>{
+  let userid=ctx.request.body.userid
+  await func.deleteAdmin(ctx,userid)
+})
 
 module.exports = router

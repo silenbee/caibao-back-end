@@ -38,8 +38,24 @@ router.get('/v0/itemnum',async(ctx)=>{
   await item.getItemNum(ctx);
 })
 
+router.post('/v0/modifyItem',async(ctx)=>{
+  let itemid=ctx.request.body.itemid
+  await item.modifyItem(itemid,ctx);
+})
 
+router.post('/v0/getNumByClass',async(ctx)=>{
+  let itemid=ctx.request.body.itemclass
+  await item.getNumByClass(itemclass,ctx);
+})
 
+// router.post('/v0/addItem',async(ctx)=>{
+//   let itemid=ctx.request.body.itemclass
+//   await item.addItem(a,b,c,d,e,f,ctx);
+// })
 
+router.post('/v0/deleteItem',async(ctx)=>{
+  let itemid=ctx.request.body.itemid
+  await item.deleteItem(itemid,ctx);
+})
 
 module.exports = router
