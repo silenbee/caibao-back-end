@@ -2,7 +2,7 @@
  * @Description: func for item
  * @Author: sheng
  * @Date: 2019-05-29 16:51:12
- * @LastEditTime: 2019-05-30 13:58:17
+ * @LastEditTime: 2019-06-05 14:15:10
  * @LastEditors: Please set LastEditors
  */
 
@@ -54,13 +54,79 @@ var getType=async(ctx,key)=>{
         });
 }
 
+var getMoney=async(ctx,key)=>{
+    let sql="select sum(OrderMoney) from vorder"
+    await query( sql ).then((res)=>{
+        if(res.length==0){
+          console.log('no order')
+          ctx.body={
+            message:'error',
+            tips:'no order yet!'
+          }
+        }
+        else{
+            ctx.body={
+                message:'success',
+                data:res
+            }
+          }
+    }).catch((err)=>{
+        ctx.body={
+            message:'error'
+        };
+    });
+}
+
+var addAdmin=async(ctx,userid)=>{
+    let sql="update user set IsAdmin=1 where UserID = '"+userid+"'"
+    await query( sql ).then((res)=>{
+        ctx.body={
+            message:'success',
+        }
+    }).catch((err)=>{
+        ctx.body={
+            message:'error'
+        };
+    });
+}
+
+var deleteAdmin=async(ctx,userid)=>{
+    let sql="update user set IsAdmin=0 where UserID = '"+userid+"'"
+    await query( sql ).then((res)=>{
+        ctx.body={
+            message:'success',
+        }
+    }).catch((err)=>{
+        ctx.body={
+            message:'error'
+        };
+    });
+}
+
+var getOrderNum=async(ctx)=>{
+    let sql="select count(*) from vorder"
+    await query( sql ).then((res)=>{
+        if(res.length==0){
+          console.log('no order')
+          ctx.body={
+            message:'error',
+            tips:'no order yet!'
+          }
+        }
+        else{
+            ctx.body={
+                message:'success',
+                data:res
+            }
+          }
+    }).catch((err)=>{
+        ctx.body={
+            message:'error'
+        };
+    });
+}
 
 
 
 
-
-
-
-
-
-module.exports = {searchItem,getType}
+module.exports = {searchItem,getType,getMoney,addAdmin,deleteAdmin,getOrderNum}
