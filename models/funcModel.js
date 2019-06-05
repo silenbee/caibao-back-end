@@ -8,6 +8,10 @@ class Func{
   getType(ctx,key){
     return FuncController.getType(ctx,key)
   }
+  getOrderNum(){}
+  getProfit(){}
+  addAdmin(){}
+  deleteAdmin(){}
 
 }
 

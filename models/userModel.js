@@ -1,5 +1,5 @@
-
 const UserController=require('../controllers/user')
+
 class User{
     constructor(a, b) {
         this.userid = a;
@@ -11,6 +11,11 @@ class User{
     register(a,b,c,d,e){
         return UserController.register(a,b,c,d,e)
     }
+    getMyInfo(ctx){}
+    modifyInfo(ctx){}
+    addMyAddress(ctx){}
+    deleteAddress(ctx){}
+
 }
 
 
