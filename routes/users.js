@@ -24,4 +24,23 @@ router.post('/register', async(ctx, next)=>{
   await user.register(ctx,userid,username,userpass,userphone)
 })
 
+router.post('/getMyInfo', async(ctx, next)=>{
+  let userid=ctx.request.body.userid;
+  let user=new User()
+  await user.getMyInfo(ctx,userid)
+})
+
+router.post('/addMyAddress', async(ctx, next)=>{
+  let userid=ctx.request.body.userid;
+  let address=ctx.request.body.address;
+  let user=new User()
+  await user.addMyAddress(ctx,userid,address)
+})
+
+router.post('/getAddress', async(ctx, next)=>{
+  let userid=ctx.request.body.userid;
+  let user=new User()
+  await user.getMyAddress(ctx,userid)
+})
+
 module.exports = router

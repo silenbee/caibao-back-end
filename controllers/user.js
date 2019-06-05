@@ -2,7 +2,7 @@
  * @Description: func for item
  * @Author: sheng
  * @Date: 2019-05-29 16:51:12
- * @LastEditTime: 2019-05-30 16:28:24
+ * @LastEditTime: 2019-06-05 17:19:00
  * @LastEditors: Please set LastEditors
  */
 
@@ -76,4 +76,64 @@ var register=async(ctx,userid,userpass,username,userphone)=>{
 
 }
 
-module.exports = {logincheck,register}
+var getInfo=async(ctx,userid)=>{
+    let sql="select UserID,UserName,UserPhone,IsAdmin from user where UserID = '"+userid+"'"
+    await query(sql).then(async(res)=>{
+        if(res.length!=0){
+            ctx.body={
+                message:'success',
+                data:res[0]
+            }
+        }
+        else{
+            ctx.body={
+                message:'error',
+                tips:'no such user'
+            }
+        }
+    }).catch((err)=>{
+        ctx.body={
+            message:err
+          }
+    })
+
+}
+
+var addAddress=async(ctx,userid,address)=>{
+    let sql="insert into address values('"+userid+"','"+address+"')"
+    await query(sql).then(async(res)=>{
+            ctx.body={
+                message:'success'
+            }
+    }).catch((err)=>{
+        ctx.body={
+            message:err
+          }
+    })
+
+}
+
+var getAddress=async(ctx,userid)=>{
+    let sql="select Address from address where userId='"+userid+"'"
+    await query(sql).then(async(res)=>{
+        if(res.length!=0){
+             ctx.body={
+                message:'success',
+                data:res
+            } 
+        }
+        else{
+            ctx.body={
+                message:'error',
+                tips:'no address'
+            }
+        }
+    }).catch((err)=>{
+        ctx.body={
+            message:err
+          }
+    })
+
+}
+
+module.exports = {logincheck,register,getInfo,addAddress,getAddress}

@@ -44,7 +44,7 @@ router.post('/v0/modifyItem',async(ctx)=>{
 })
 
 router.post('/v0/getNumByClass',async(ctx)=>{
-  let itemid=ctx.request.body.itemclass
+  let itemclass=ctx.request.body.itemclass
   await item.getNumByClass(itemclass,ctx);
 })
 
