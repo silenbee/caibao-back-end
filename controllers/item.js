@@ -2,7 +2,7 @@
  * @Description: func for item
  * @Author: sheng
  * @Date: 2019-05-29 16:51:12
- * @LastEditTime: 2019-06-05 14:50:30
+ * @LastEditTime: 2019-06-05 22:02:10
  * @LastEditors: Please set LastEditors
  */
 
@@ -13,6 +13,7 @@ const { query }=require('./async-db')
 var getitemlist=async(ctx)=>{
         let sql="select * from item"
         await query( sql ).then((res)=>{
+            console.log(res)
                 ctx.body=res;
         }).catch((err)=>{
             ctx.body=err;

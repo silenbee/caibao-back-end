@@ -28,7 +28,7 @@ router.get('/v0/hello', async (ctx, next) => {
 })
 
 router.get('/v0/itemlist',async(ctx)=>{
-  await item.getitemlist(ctx);
+  await item.getItemList(ctx);
 })
 
 

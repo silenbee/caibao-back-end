@@ -43,4 +43,13 @@ router.post('/getAddress', async(ctx, next)=>{
   await user.getMyAddress(ctx,userid)
 })
 
+router.post('/modifyInfo', async(ctx, next)=>{
+  let userid=ctx.request.body.userid;
+  let userphone=ctx.request.body.userphone;
+  let address=ctx.request.body.address;
+  let username=ctx.request.body.username;
+  let user=new User()
+  await user.modifyInfo(ctx,userid,username,userphone,address)
+})
+
 module.exports = router

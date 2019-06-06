@@ -2,7 +2,7 @@
  * @Description: func for item
  * @Author: sheng
  * @Date: 2019-05-29 16:51:12
- * @LastEditTime: 2019-06-05 17:30:48
+ * @LastEditTime: 2019-06-05 20:30:30
  * @LastEditors: Please set LastEditors
  */
 
@@ -20,7 +20,7 @@ var logincheck=async(ctx,userid,userpass)=>{
             }
         }
         else{
-            await query( "select UserPass,UserName,UserPhone from user where UserId = '"+userid+"'" ).then((data)=>{
+            await query( "select UserPass,UserName,UserPhone,Address from user,address where user.UserId=address.UserId and user.UserId = '"+userid+"'" ).then((data)=>{
                 if(userpass!=data[0]['UserPass'])
                     ctx.body={
                         message:'passerror'
@@ -30,7 +30,10 @@ var logincheck=async(ctx,userid,userpass)=>{
                         message:'success',
                         userdata:{
                             UserName:data[0].UserName,
-                            UserPhone:data[0].UserPhone
+                            UserPhone:data[0].UserPhone,
+                            UserEmail:'12345@qq.com',
+                            UserAccount:userid,
+                            UserAddress:data[0].Address
                         }
                     }
                 }).catch((err)=>{
@@ -136,4 +139,24 @@ var getAddress=async(ctx,userid)=>{
 
 }
 
-module.exports = {logincheck,register,getInfo,addAddress,getAddress}
+var modifyInfo=async(ctx,userid,username,userphone,address)=>{
+    let sql="update user set UserPhone='"+userphone+"' and MainAddress = '"+address+"'and UserName='"+username+"' where UserId='"+userid+"'"
+    await query(sql).then(async(res)=>{
+            ctx.body={
+                message:'success',
+                data:{
+                    userid:userid,
+                    userphone:userphone,
+                    address:address,
+                    username:username
+                }
+            }
+    }).catch((err)=>{
+        ctx.body={
+            message:err
+          }
+    })
+
+}
+
+module.exports = {logincheck,register,getInfo,addAddress,getAddress,modifyInfo}

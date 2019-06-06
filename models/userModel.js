@@ -18,7 +18,9 @@ class User{
         return UserController.getInfo(ctx,userid)
     }
 
-    modifyInfo(ctx){}
+    modifyInfo(ctx,userid,username,userphone,address){
+        return UserController.modifyInfo(ctx,userid,username,userphone,address)
+    }
 
     getMyAddress(ctx,userid){
         return UserController.getAddress(ctx,userid)
